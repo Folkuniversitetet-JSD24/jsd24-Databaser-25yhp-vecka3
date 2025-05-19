@@ -1,0 +1,161 @@
+SJÄLVSTÄNDIG ÖVNINGAR – MongoDB & Dokumentdatabaser (GUI/Compass)
+
+🟢 Lätt nivå – 
+
+🧠 Syfte: Lära sig förstå och använda CRUD-operationer i MongoDB Atlas GUI
+
+1. 🏷️ Produkter (products)
+
+Scenario: Du har en databas för ett produktregister.
+
+Samling: products
+
+Uppgift:
+Skapa minst tre produkter med fälten: name, price, category
+
+Sök alla produkter inom kategorin "books" (Read)
+
+Uppdatera priset på en produkt (Update)
+
+Ta bort en produkt (Delete)
+
+-----------------------------
+2. 📚 Böcker (books)
+
+Scenario: Du skapar en liten bokdatabas.
+
+Uppgift:
+Skapa samlingen books
+
+Lägg till tre böcker med: title, author, year, pages
+
+Filtrera alla böcker äldre än år 2015
+
+Ändra antalet sidor på en bok
+
+Ta bort boken med lägst antal sidor
+
+-----------------------------
+3. 👩‍💻 Medlemmar (members)
+
+Scenario: Du registrerar klubbmedlemmar.
+
+Uppgift:
+Skapa samlingen members
+
+Lägg till två medlemmar med: name, email, memberSince
+
+Sök efter en medlem med viss e-postadress
+
+Uppdatera ett namn
+
+Ta bort en medlem som registrerades innan ett visst år
+
+-----------------------------
+-----------------------------
+-----------------------------
+🟠 Medel nivå – 
+
+🧠 Syfte: Förstå inbäddade dokument, arrayer och kombinera CRUD med filter
+
+1. 👤 Användare med adresser (users)
+
+Scenario: Du vill lagra användare med inbäddade adresser.
+
+Uppgift:
+Samling: users
+
+Skapa två användare med name, email, och address (med city, street, zip)
+
+Sök alla användare i en viss stad
+
+Uppdatera gatuadress
+
+Ta bort användare med en viss postkod
+
+-----------------------------
+2. 💬 Kommentarer (comments)
+
+Scenario: Du hanterar kommentarer till blogginlägg.
+
+Uppgift:
+Skapa samlingen comments
+
+Lägg till tre kommentarer med: text, author, postId, createdAt
+
+Filtrera kommentarer från en viss användare
+
+Uppdatera en kommentarstext
+
+Ta bort kommentarer äldre än ett visst datum
+
+-----------------------------
+3. 🏬 Butiker med öppettider (stores)
+
+Scenario: Varje butik har ett inbäddat öppettider-objekt.
+
+Uppgift:
+Skapa samlingen stores
+
+Lägg till två butiker med: name, location och openingHours (objekt med weekday, weekend)
+
+Sök butiker med helgöppet
+
+Ändra öppettider för vardagar
+
+Ta bort en butik med specifik ort
+
+-----------------------------
+-----------------------------
+-----------------------------
+🔴 Svår nivå –
+
+🧠 Syfte: Träna nested arrays, komplex filtrering och manipulation av dokument med flera nivåer
+
+1. 👨‍🎓 Studenter med kurser (students)
+Scenario: Varje student går flera kurser.
+
+Uppgift:
+Skapa samlingen students
+
+Lägg till en student med: name, email, courses (array av objekt med title, credits)
+
+Hämta alla som går kursen "Node.js"
+
+Ändra credits på "JavaScript" för en student
+
+Ta bort kursen "HTML" från en students kurslista
+
+-----------------------------
+2. 🧾 Fakturor med rader (invoices)
+
+Scenario: Du hanterar fakturor med produkter.
+
+Uppgift:
+Skapa samlingen invoices
+
+Lägg till en faktura med: customer, date, items (array med name, price)
+
+Filtrera fakturor som innehåller produkten "Konsulttimme"
+
+Uppdatera priset på en rad
+
+Ta bort en rad från fakturan
+
+-----------------------------
+3. 📅 Event med deltagare (events)
+
+Scenario: Varje event har flera deltagare med RSVP-status.
+RSVP betyder typ: "svara, tack"
+Vanliga värden: "yes", "no", "maybe"
+
+Uppgift:
+Skapa samlingen events
+
+Lägg till ett event med: title, date, attendees (array av objekt med name, email, rsvp)
+
+Hämta alla som svarat "yes" på ett event
+
+Uppdatera RSVP för en deltagare
+
+Ta bort en deltagare från ett event
