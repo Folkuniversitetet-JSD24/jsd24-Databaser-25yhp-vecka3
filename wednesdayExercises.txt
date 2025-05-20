@@ -1,0 +1,120 @@
+🧑‍💻 SJÄLVSTÄNDIGA ÖVNINGAR – Mongoose: Relationer + .aggregate()
+
+🧠 Syfte:
+
+Träna på att koppla ihop flera modeller med ref
+
+Använda .populate() för att hämta relaterade dokument (på en eller flera nivåer)
+
+Använda .aggregate() med $group, $match, $sort, $project för att sammanställa och filtrera data
+
+Förstå när .aggregate() är bättre än vanlig JavaScript
+
+----------------------
+🟢 Lätt nivå
+
+1.🎬 Filmer + Recensioner
+
+Uppgift:
+Skapa modeller för Movie (title) och Review (rating, movie: ref)
+
+Skapa några recensioner kopplade till filmer
+
+Hämta alla recensioner med .populate("movie")
+
+Använd .select() för att visa bara titel och betyg
+
+----------------------
+2. 📚 Böcker + Lån
+
+Uppgift:
+Skapa modeller: Book (title), Loan (loanDate, book: ref)
+
+Hämta alla lån med boktiteln inbäddad
+
+Begränsa svaren till loanDate och book.title med .populate(...).select(...)
+
+----------------------
+3. 🧑‍⚕️ Läkare + Patienter
+
+Uppgift:
+Skapa modeller: Doctor (name), Patient (name, doctor: ref)
+
+Hämta alla patienter + läkarnamn
+
+Använd .populate() och visa endast nödvändiga fält
+
+----------------------
+🟠 Medel nivå
+
+1. 👤 Användare + Inlägg + Kategorier
+
+Uppgift:
+Skapa User, Post, Category
+
+Post har ref till både user och category
+
+Hämta alla inlägg → .populate("user") och .populate("category")
+
+Visa endast post.title, user.name, category.name
+
+----------------------
+2. 💰 Kunder + Ordrar + Orderrader
+
+Uppgift:
+Skapa Customer, Order och LineItem (med ref till Order och Product)
+
+Hämta en order → inkludera alla rader och varje produktens namn + pris
+
+Bonus: Räkna ut totalsumma med .reduce() i JS (inte .aggregate)
+
+----------------------
+3. 📅 Event + Biljetter
+
+Uppgift:
+Event har namn och datum
+
+Ticket har event (ref) och buyerName
+
+Hämta alla biljetter, visa endast eventnamn + buyerName (med .populate(...).select(...))
+
+----------------------
+🔴 Svår nivå
+
+1. 🎞️ Filmer + Recensioner + Statistik
+
+Uppgift:
+Skapa Movie + Review
+
+Använd .aggregate() för att:
+    $group: räkna antal recensioner per film
+
+    $avg: snittbetyg
+
+    $sort: högsta först
+
+Visa titel, snittbetyg och antal
+
+----------------------
+2. 👨‍🏫 Lärare + Klasser + Skolor
+
+Uppgift:
+Teacher undervisar i Class, som tillhör School
+
+Hämta alla klasser för en teacher → med skolans namn via .populate() på två nivåer
+
+Visa endast teacher.name, class.name, school.name
+
+----------------------
+3. 🧾 Fakturor + Rader + Produkter (Advanced aggregate)
+
+Uppgift:
+Invoice har flera LineItems, varje LineItem har en ref till Product
+
+Bygg en .aggregate() pipeline:
+
+$match: bara en specifik invoice
+
+$lookup: hämta produktinfo
+
+$project: visa quantity, productName, subtotal (price × quantity)

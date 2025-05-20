@@ -1,0 +1,200 @@
+🧾 Lektionsplanering – Onsdag 28 maj 2025
+⏰ Tid: 13.00–16.00
+🎯 Fokus: Kombinera modeller, djupare användning av .populate() och .aggregate()
+🧠 Pedagogiskt fokus: fördjupning i relationer och databehandling i Mongoose, samt förberedelse inför examination
+
+-----------------------------
+🎯 Syfte
+
+Koppla ihop flera modeller (User, Movie, Review) i relationsflöden
+
+Använda .populate() på flera nivåer (t.ex. hämta både användare och film för en recension)
+
+Skapa och förstå .aggregate()-pipelines (≈ SQL GROUP BY) med $group, $match, $sort, $project, $limit
+
+Bygga rutter som sammanställer och strukturerar data
+
+Träna på Postman-testning av relationer och sammanställningar
+
+Förbereda inför kommande individuella examinationen
+
+-----------------------------
+🧠 Agenda
+
+Code review (peer feedback)
+Teori – CRUD + populate
+Code-Along 1 – CRUD, ref
+Teori + Code-Along 2 – .aggregate()
+Självständig övning: pipelines
+Examination & Q&A
+
+-----------------------------
+-----------------------------
+-----------------------------
+🧠 TEORI
+
+🗣️ CRUD i Mongoose
+
+“Mongoose ger oss enkla metoder för att skapa, läsa, uppdatera och ta bort dokument. Det påminner om ORM-verktyg i andra språk.”
+
+.create(), .find(), .findById()
+
+.findByIdAndUpdate(), .findByIdAndDelete()
+
+.populate() – används för att hämta hela relaterade dokument
+
+🗣️ Vad är .aggregate()?
+
+“MongoDB:s aggregate() liknar SQL:s GROUP BY, JOIN, HAVING, men använder istället en pipeline av transformationer.”
+
+“Vi skickar in en array med steg – varje steg är en transformation: $match, $group, $sort, $project, osv.”
+
+En aggregation pipeline i MongoDB fungerar som ett produktionsband – varje steg modifierar datan och skickar vidare till nästa. Det är exakt som en kedja av .map(), .filter() och .sort() i JavaScript – men det sker direkt i databasen och är mycket effektivare.
+
+📊 Jämförelse: SQL vs MongoDB
+
+| SQL                      | MongoDB Mongoose                    |
+|--------------------------|-------------------------------------|
+| SELECT * FROM            | .find()                             |
+| JOIN                     | .populate() eller $lookup           |
+| GROUP BY category        | { $group: { _id: "$category" }}     |
+| ORDER BY created_at      | { $sort: { createdAt: -1 }}         |
+| SELECT col1, col2        | { $project: { col1: 1, col2: 1 }}   |
+
+-----------------------------
+-----------------------------
+-----------------------------
+💻 Code-Along – User, Movie, Review: CRUD + Ref + populate + aggregate
+
+📁 Projektstruktur:
+rootmappen/
+├── models/
+│   ├── User.js
+│   ├── Movie.js
+│   └── Review.js
+├── index.js
+├── .env
+
+✅ MODELLER
+
+models/User.js
+Genomför den koden
+
+models/Movie.js
+Genomför den koden
+
+models/Review.js
+Genomför den koden
+
+index.js
+Genomför den koden
+
+-----------------------------
+-----------------------------
+-----------------------------
+✅ Verifiera att allt fungerar – Testa i Postman
+
+1. Skapa en användare
+
+Method: POST
+
+URL: http://localhost:3210/users
+
+Body (JSON):
+{
+  "name": "filmfan123",
+  "email": "fan@example.com"
+}
+
+📌 Förväntat svar: 
+{
+  "_id": "...",
+  "name": "filmfan123",
+  "email": "fan@example.com",
+  "__v": 0
+}
+
+-----------------------------
+2. Skapa film:
+
+Method: POST
+
+URL: http://localhost:3210/movies
+
+Body (JSON):
+{
+  "title": "Interstellar",
+  "genre": "Sci-Fi",
+  "releaseYear": 2014,
+  "director": "Christopher Nolan"
+}
+
+📌 Förväntat svar: Filmobjekt med _id och övriga fält
+
+-----------------------------
+3. Skapa recension:
+
+Method: POST
+
+URL: http://localhost:3210/reviews
+
+Body (JSON):
+{
+  "rating": 5,
+  "comment": "Magisk film!",
+  "movieId": "<id från filmen>",
+  "userId": "<id från användaren>"
+}
+
+📌 Förväntat svar: Recensionsobjekt med createdAtCA, _id, etc.
+
+-----------------------------
+4. Hämta relationer
+
+GET http://localhost:3210/reviews
+
+En array där varje objekt innehåller en inbäddad user och movie med deras namn/titel.
+
+-----------------------------
+5. Hämta betygssammanställning
+
+GET http://localhost:3210/movies/ratings
+
+➜ Returnerar en array med filmer:
+{
+  "_id": {
+    "titleCA": "Interstellar",
+    "genreCA": "Sci-Fi"
+  },
+  "avgRatingCA": 4.75,
+  "reviewCountCA": 8
+}
+
+-----------------------------
+6. Topplista – endast bra filmer
+
+Method: GET
+
+URL: http://localhost:3210/movies/top-sci-fi
+
+📌 Förväntat svar:
+En array med max 3 filmer, där varje objekt innehåller:
+{
+  "title": "Interstellar",
+  "genre": "Sci-Fi",
+  "avgRating": 4.8
+}
+
+-----------------------------
+-----------------------------
+-----------------------------
+Dags för övningar
+
+-----------------------------
+-----------------------------
+-----------------------------
+🔁 Gruppdiskussion 
+
+Varför inte bädda in recensioner direkt i filmen?
+
+När är det bättre att använda .aggregate() än att hämta alla reviews och räkna själv i Node?
