@@ -1,0 +1,197 @@
+🧾 Lektionsplanering – Måndag 27 maj 2025
+⏰ Tid: 13.00–16.00
+🎯 Fokus: Mongoose-schema, modeller, en-till-många-relationer
+🧠 Pedagogiskt fokus: gå från MongoDB GUI till strukturerad kodbas, förstå skillnaden mellan schemalös och schema-driven datamodellering, praktiskt bygga modeller och skapa relationer
+
+-----------------------------
+🎯 Syfte
+
+Förstå varför vi använder Mongoose när vi jobbar med MongoDB i Node.js
+
+Förstå hur Mongoose använder scheman för att strukturera data i MongoDB
+
+Kunna skapa modeller i Node.js med Mongoose
+
+Skapa en-till-många-relationer med ref och populate()
+
+Förbereda inför ett komplett REST-API-byggande i lektion 3
+
+-----------------------------
+🧠 Agenda
+
+👋 Teori: Vad är Mongoose? Varför använda schema? Fördelar/nackdelar?
+💻 Code-Along 1	Skapa projekt, skapa schema, model, ref och relationsstruktur, ansluta till MongoDB Atlas
+💻 Code-Along 2	Bygg routes för POST och GET med populate()
+🧑‍💻 Självständig övningar
+🔁 Reflektion & frågor	Hur känns Mongoose jämfört med Atlas GUI? När är schema-struktur viktigt? När passar ref bättre än inbäddning? Vad känns oklart?
+
+-----------------------------
+-----------------------------
+-----------------------------
+🧠 TEORI
+
+Vi har tidigare jobbat direkt i MongoDB Atlas – idag ska vi börja strukturera vår data med hjälp av Mongoose
+
+🗣️ Vad är Mongoose?
+
+MongoDB i sig är schemalöst. Vi kan slänga in vad som helst – vilket ger oss frihet, men också risk för kaos.
+
+Mongoose tvingar oss att definiera struktur - ett schema. Varför? För att vi som utvecklare ofta behöver validering, kontroll, och tydlighet samt hålla data konsekvent.
+
+Att gå från dokument i Atlas till schema i Mongoose är som att gå från post-it-lappar till en pärm med flikar.
+
+Mongoose fungerar som ett lager mellan MongoDB och Node.js. Vi skapar modeller som kontrollerar hur dokument ska se ut.
+
+Med ref kan vi bygga relationer som liknar JOINs – t.ex. Post har en user. Det betyder att vi kan hämta in hela användaren med .populate().
+
+🗣️ Varför använda scheman?
+
+Fördelar	
+Förhindrar inkonsekvent data	
+
+Ger validering och struktur	
+
+Bra vid större eller delade projekt	
+
+Nackdelar
+Mindre flexibel än ren MongoDB
+
+Kräver extra kod och konfiguration
+
+Inte alltid nödvändigt i små appar
+
+🗣️ Hur fungerar ref och populate()?
+ref används i ett schema för att skapa relationer till andra modeller
+
+populate() används i kod för att automatiskt hämta den relaterade datan från en annan samling
+
+-----------------------------
+-----------------------------
+-----------------------------
+💻 CODE-ALONG – Mongoose Schema & Ref
+
+Del 1: Projektsetup & Schema
+
+📁 Projektstruktur:
+ root mappen/
+├── models/
+│   ├── User.js
+│   └── Post.js
+├── index.js
+├── .env
+
+Initiera projekt: npm init -y
+
+Installera:
+npm install express mongoose dotenv
+
+Skapa models/User.js:
+Genomför den koden.
+
+Skapa models/Post.js:
+Genomför den koden.
+
+Skapa index.js, koppla till din Atlas-databas:
+Genomför den koden.
+
+-----------------------------
+-----------------------------
+-----------------------------
+Dags för övningar
+
+-----------------------------
+-----------------------------
+-----------------------------
+✅ Verifiera att allt fungerar – Testa i Postman
+
+1. Skapa en användare
+
+Method: POST
+
+URL: http://localhost:3000/users
+
+Body (JSON):
+{
+  "name": "Anna Andersson",
+  "email": "anna@example.com"
+}
+
+📌 Förväntat svar: Ett objekt med namn, e-post, och ett automatiskt genererat _id.
+
+2. Skapa ett inlägg som kopplas till användaren
+
+Method: POST
+
+URL: http://localhost:3000/posts
+
+Body (JSON):
+{
+  "title": "Min första post",
+  "content": "Detta är mitt första inlägg i databasen.",
+  "user": "id:t från användaren ovan: Klistra in här!!!"
+}
+
+📌 Tips: Kopiera _id från svaret på steg 1 och klistra in det i "user"-fältet.
+
+3. Hämta alla inlägg – verifiera att .populate() fungerar
+
+Method: GET
+
+URL: http://localhost:3000/posts
+
+📌 Förväntat svar: En array där varje post innehåller:
+{
+  "title": "...",
+  "content": "...",
+  "user": {
+    "_id": "...",
+    "name": "Anna Andersson",
+    "email": "anna@example.com"
+  }
+}
+
+🧠 Fråga till klassen:
+
+“Vad hade vi fått om vi INTE använt .populate()?”
+
+4. Testa sorterad route – hämta de 5 senaste posterna
+
+Method: GET
+
+URL: http://localhost:3000/posts/latest
+
+📌 Förväntat resultat: Max 5 poster, sorterade med senaste först
+
+5. Hämta "rensad" version – endast fält vi vill visa i frontend
+
+Method: GET
+
+URL: http://localhost:3210/posts/clean
+
+📌 Förväntat resultat:
+{
+  "title": "...",
+  "content": "...",
+  "user": {
+    "name": "Anna Andersson",
+    "email": "anna@example.com"
+  }
+}
+
+🧠 Diskussion:
+Varför är det en fördel att inte skicka med onödiga fält som _id, __v och updatedAt?
+
+🎓 Avslutande kommentar:
+Det här är grunden till att bygga t.ex. bloggar, nyhetsflöden, kommentarsystem eller alla typer av appar där användare skapar innehåll.
+Med .populate() kan vi enkelt bygga relationer, och med .select() kan vi kontrollera exakt vad som syns i frontend.
+
+-----------------------------
+-----------------------------
+-----------------------------
+🔁 Gruppdiskussion 
+
+Hur känns det att modellera i kod jämfört med att klicka i Atlas GUI?
+
+När tycker ni det är bäst att använda .populate() – och när borde man hellre spara all data direkt i dokumentet?
+
+Om ni skulle bygga en blogg eller ett kommentarsfält – hur skulle ni modellera det nu?
