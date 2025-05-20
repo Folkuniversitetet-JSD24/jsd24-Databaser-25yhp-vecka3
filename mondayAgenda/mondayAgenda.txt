@@ -1,4 +1,4 @@
-🧾 Lektionsplanering – Måndag 27 maj 2025
+🧾 Lektionsplanering – Måndag 26 maj 2025
 ⏰ Tid: 13.00–16.00
 🎯 Fokus: Mongoose-schema, modeller, en-till-många-relationer
 🧠 Pedagogiskt fokus: gå från MongoDB GUI till strukturerad kodbas, förstå skillnaden mellan schemalös och schema-driven datamodellering, praktiskt bygga modeller och skapa relationer
