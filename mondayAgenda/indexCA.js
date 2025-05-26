@@ -35,7 +35,7 @@ app.post("/postsCA", async (req, res) => {
 // Här är det avgörande att förstå att relationen sker via ID:t. När ni skickar en ny post i Postman, måste userCA vara ett giltigt ID från en användare ni redan skapat.
 // Det här är alltså det praktiska momentet av relationsdatamodellering i MongoDB – och motsvarar det vi annars gör med FOREIGN KEY i SQL.
 
-// Här kan vi skapa en post med ett fält userCA som innehåller användarens ID. Vi sparar alltså en relation, inte hela användaren.
+// Här kan vi skapa en route med ett fält userCA som innehåller användarens ID. Vi sparar alltså en relation, inte hela användaren.
 app.get("/postsCA", async (req, res) => {
   // I vanliga fall skulle vi bara få ett ID – men med .populate() ersätts ID:t med hela användarobjektet.”
 
