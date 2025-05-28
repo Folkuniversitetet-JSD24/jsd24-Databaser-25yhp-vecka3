@@ -98,7 +98,7 @@ Genomför den koden
 
 Method: POST
 
-URL: http://localhost:3210/users
+URL: http://localhost:1212/users
 
 Body (JSON):
 {
@@ -108,10 +108,14 @@ Body (JSON):
 
 📌 Förväntat svar: 
 {
-  "_id": "...",
-  "name": "filmfan123",
-  "email": "fan@example.com",
-  "__v": 0
+  "succes": true,
+  "message": "Användare skapad",
+  "data": {
+    "_id": "6837...",
+    "name": "filmfan",
+    "email": "filmfan@example.com",
+    "__v": 0
+  }
 }
 
 -----------------------------
@@ -129,7 +133,20 @@ Body (JSON):
   "director": "Christopher Nolan"
 }
 
-📌 Förväntat svar: Filmobjekt med _id och övriga fält
+
+📌 Förväntat svar: 
+{
+  "succes": true,
+  "message": "Film skapad",
+  "data": {
+    "_id": "6837...",
+    "title": "Interstellar",
+    "genre": "Sci-Fi",
+    "releaseYear": 2014,
+    "director": "Christopher Nolan",
+    "__v": 0
+  }
+}
 
 -----------------------------
 3. Skapa recension:
@@ -146,7 +163,23 @@ Body (JSON):
   "userId": "<id från användaren>"
 }
 
-📌 Förväntat svar: Recensionsobjekt med createdAtCA, _id, etc.
+📌 Förväntat svar: 
+{
+  "succes": true,
+  "message": "Recension skapad",
+  "data": {
+    "_id": "6837...",
+    "rating": 5,
+    "comment": "Magisk film!",
+    "movieId": "6837...",
+    "userId": "6837...",
+    "createdAt": "...",
+    "updatedAt": "...",
+    "__v": 0
+  }
+}
+
+✅ Upprepa detta med flera olika betyg (t.ex. 3, 4, 5) men samma movieId.
 
 -----------------------------
 4. Hämta relationer
@@ -155,20 +188,31 @@ GET http://localhost:3210/reviews
 
 En array där varje objekt innehåller en inbäddad user och movie med deras namn/titel.
 
+Förväntat svar:
+[
+  {
+    "rating": 5,
+    "comment": "Magisk film!",
+    "userId": { "name": "filmfan" },
+    "movieId": { "title": "Interstellar" }
+  },
+  ...
+]
+
 -----------------------------
 5. Hämta betygssammanställning
 
 GET http://localhost:3210/movies/ratings
 
 ➜ Returnerar en array med filmer:
-{
-  "_id": {
-    "titleCA": "Interstellar",
-    "genreCA": "Sci-Fi"
-  },
-  "avgRatingCA": 4.75,
-  "reviewCountCA": 8
-}
+[
+  {
+    "title": "Interstellar",
+    "genre": "Sci-Fi",
+    "avgRating": 4.0,
+    "reviewCount": 3
+  }
+]
 
 -----------------------------
 6. Topplista – endast bra filmer
@@ -179,11 +223,59 @@ URL: http://localhost:3210/movies/top-sci-fi
 
 📌 Förväntat svar:
 En array med max 3 filmer, där varje objekt innehåller:
+[
+  {
+    "title": "Interstellar",
+    "genre": "Sci-Fi",
+    "avgRating": 4.0,
+    "reviewCount": 3
+  }
+]
+
+-----------------------------
+7. /seed-review i Postman
+
+🛠 Syfte:
+Lägga in en dummy-recension utan att behöva skapa användare eller film manuellt.
+
+Method: POST
+
+URL: http://localhost:1212/seed-review
+
+Body: (ingen behövs – den är hårdkodad i serverkoden)
+
+📌 Förväntat svar, Om användaren med id 68371040fe398b566cb68260 och filmen med id 68371072fe398b566cb68262 finns i databasen:
+
 {
-  "title": "Interstellar",
-  "genre": "Sci-Fi",
-  "avgRating": 4.8
+  "succes": true,
+  "message": "En recension skapad.",
+  "data": {
+    "_id": "...",
+    "rating": 5,
+    "comment": "EN SEEDAD film",
+    "movieId": "68371072fe398b566cb68262",
+    "userId": "68371040fe398b566cb68260",
+    "createdAt": "...",
+    "updatedAt": "...",
+    "__v": 0
+  }
 }
+
+❗ Om du får ett fel som:
+{
+  "succes": false,
+  "error": "Movie validation failed: movieId: Cast to ObjectId failed..."
+}
+Då betyder det att objektet inte finns i databasen.
+
+💡 Tips – skapa matchande data:
+Skapa en användare i Postman och kopiera dess _id.
+
+Skapa en film i Postman och kopiera dess _id.
+
+Uppdatera koden i /seed-review med dessa värden:
+movieId: new mongoose.Types.ObjectId("DIN_FILM_ID"),
+userId: new mongoose.Types.ObjectId("DIN_USER_ID"),
 
 -----------------------------
 -----------------------------
